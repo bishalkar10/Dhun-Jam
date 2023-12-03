@@ -179,7 +179,7 @@ text {
   opacity: 0;
   z-index: 100;
   animation: slide-up 5s ease-in-out forwards;
-} 
+}
 
 .error {
   background-color: red;
@@ -212,6 +212,6 @@ text {
   }
   100% {
     opacity: 1;
-    transform: translate(-50%,-100px);
+    transform: translate(-50%, -100px);
   }
-} */
+}
