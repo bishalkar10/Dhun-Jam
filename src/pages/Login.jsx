@@ -112,7 +112,7 @@ export default function Login() {
           />
           <FontAwesomeIcon
             className="see-password"
-            icon={showPassword ? faEye : faEyeSlash}
+            icon={showPassword ? faEyeSlash : faEye}
             onClick={togglePasswordVisibility}
           />
         </div>
