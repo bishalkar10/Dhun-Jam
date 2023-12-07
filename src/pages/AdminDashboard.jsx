@@ -18,18 +18,14 @@ export default function AdminDashboard() {
     category4: null,
   });
   const [prices, setPrices] = useState({
-    amount: {
-      category_6: userInfo.customSongAmount,
-      category_7: userInfo.category1,
-      category_8: userInfo.category2,
-      category_9: userInfo.category3,
-      category_10: userInfo.category4,
-    }
+    category_6: userInfo.customSongAmount,
+    category_7: userInfo.category1,
+    category_8: userInfo.category2,
+    category_9: userInfo.category3,
+    category_10: userInfo.category4,
   })
-
   async function fetchData() {
     try {
-      console.log("API call happened");
       const response = await fetch(`https://stg.dhunjam.in/account/admin/${id}`, {
         method: "GET",
         headers: {
@@ -63,10 +59,30 @@ export default function AdminDashboard() {
   // make a put request on save-btn click
   const handleSubmit = async () => {
     try {
+      // create an object with the changed prices 
+      // compare the prices state variable with the userInfo state variable and only add the changed prices to the object
+      const changedPrices = {
+        amount: {}
+      }
+      if (prices.category_6 !== userInfo.customSongAmount) {
+        changedPrices.amount.category_6 = prices.category_6
+      }
+      if (prices.category_7 !== userInfo.category1) {
+        changedPrices.amount.category_7 = prices.category_7
+      }
+      if (prices.category_8 !== userInfo.category2) {
+        changedPrices.amount.category_8 = prices.category_8
+      }
+      if (prices.category_9 !== userInfo.category3) {
+        changedPrices.amount.category_9 = prices.category_9
+      }
+      if (prices.category_10 !== userInfo.category4) {
+        changedPrices.amount.category_10 = prices.category_10
+      }
 
       const response = await fetch(`https://stg.dhunjam.in/account/admin/${id}`, {
         method: "PUT",
-        body: JSON.stringify(prices),
+        body: JSON.stringify(changedPrices),
         headers: {
           "Content-Type": "application/json",
         },
@@ -74,6 +90,8 @@ export default function AdminDashboard() {
       if (response.ok) {
         const data = await response.json();
         console.log(data.data)
+        // if put request is successful, fetch the data again and update the userInfo state
+        fetchData();
       }
     } catch (error) {
       console.error(error);
@@ -101,21 +119,18 @@ export default function AdminDashboard() {
 
     setPrices((prevPrices) => ({
       ...prevPrices,
-      amount: {
-        ...prevPrices.amount,
-        [name]: newValue
-      }
+      [name]: newValue
     }));
   };
 
   // whenever the prices state variable changes, the useEffect hook will run and check the validity of the inputs
   useEffect(() => {
     // Check the validity of the inputs 
-    const isCustomSongAmountValid = prices.amount.category_6 >= 99;
-    const isCategory1Valid = prices.amount.category_7 >= 79;
-    const isCategory2Valid = prices.amount.category_8 >= 59;
-    const isCategory3Valid = prices.amount.category_9 >= 39;
-    const isCategory4Valid = prices.amount.category_10 >= 19;
+    const isCustomSongAmountValid = prices.category_6 >= 99;
+    const isCategory1Valid = prices.category_7 >= 79;
+    const isCategory2Valid = prices.category_8 >= 59;
+    const isCategory3Valid = prices.category_9 >= 39;
+    const isCategory4Valid = prices.category_10 >= 19;
 
     // Update the isValidInput state based on the conditions
     setIsValidInput(
@@ -131,16 +146,13 @@ export default function AdminDashboard() {
   useEffect(() => {
     setPrices((prevPrices) => ({
       ...prevPrices,
-      amount: {
-        category_6: userInfo.customSongAmount,
-        category_7: userInfo.category1,
-        category_8: userInfo.category2,
-        category_9: userInfo.category3,
-        category_10: userInfo.category4,
-      }
+      category_6: userInfo.customSongAmount,
+      category_7: userInfo.category1,
+      category_8: userInfo.category2,
+      category_9: userInfo.category3,
+      category_10: userInfo.category4,
     }));
   }, [userInfo]);
-
   useEffect(() => {
 
     // Set the document title
@@ -167,7 +179,7 @@ export default function AdminDashboard() {
               <input
                 type="radio"
                 value="Yes"
-                checked={userInfo.chargeCustomers}
+                checked={userInfo?.chargeCustomers}
                 onChange={handleChargeChange}
               />
               Yes
@@ -176,7 +188,7 @@ export default function AdminDashboard() {
               <input
                 type="radio"
                 value="No"
-                checked={!userInfo.chargeCustomers}
+                checked={!userInfo?.chargeCustomers}
                 onChange={handleChargeChange}
               />
               No
@@ -190,9 +202,9 @@ export default function AdminDashboard() {
             style={{ borderColor: userInfo.chargeCustomers ? "#ffffff" : "#C2C2C2" }}
             type="text" // ! This field is meant to accept numbers only but we don't get the expected results with type="number" 
             name="category_6"
-            value={prices.amount.category_6}
+            value={prices?.category_6 || ""}
             onChange={handleInputChange}
-            readOnly={userInfo.chargeCustomers} // if userInfo.chargeCustomers is true the input will be read only
+            readOnly={!userInfo?.chargeCustomers} // if userInfo.chargeCustomers is false the input will be read only
             required
           />
 
@@ -200,12 +212,12 @@ export default function AdminDashboard() {
           <div className="text-input-div">
             <input
               className="regular-song-inputs"
-              style={{ borderColor: userInfo.chargeCustomers ? "#ffffff" : "#C2C2C2" }}
+              style={{ borderColor: userInfo?.chargeCustomers ? "#ffffff" : "#C2C2C2" }}
               type="text"
               name="category_7"
-              value={prices.amount.category_7}
+              value={prices?.category_7 || ""}
               onChange={handleInputChange}
-              readOnly={userInfo.chargeCustomers} // if userInfo.chargeCustomers is true the input will be read only
+              readOnly={!userInfo?.chargeCustomers} // if userInfo.chargeCustomers is false the input will be read only
               required
             />
             <input
@@ -213,27 +225,27 @@ export default function AdminDashboard() {
               style={{ borderColor: userInfo.chargeCustomers ? "#ffffff" : "#C2C2C2" }}
               type="text" // ! This field is meant to accept numbers only but we don't get the expected results with type="number" 
               name="category_8"
-              value={prices.amount.category_8}
+              value={prices?.category_8 || ""}
               onChange={handleInputChange}
-              readOnly={userInfo.chargeCustomers} // if userInfo.chargeCustomers is true the input will be read only
+              readOnly={!userInfo?.chargeCustomers} // if userInfo.chargeCustomers is false the input will be read only
               required />
             <input
               className="regular-song-inputs"
-              style={{ borderColor: userInfo.chargeCustomers ? "#ffffff" : "#C2C2C2" }}
+              style={{ borderColor: userInfo?.chargeCustomers ? "#ffffff" : "#C2C2C2" }}
               type="text" // ! This field is meant to accept numbers only but we don't get the expected results with type="number" 
               name="category_9"
-              value={prices.amount.category_9}
+              value={prices?.category_9 || ""}
               onChange={handleInputChange}
-              readOnly={userInfo.chargeCustomers} // if userInfo.chargeCustomers is true the input will be read only
+              readOnly={!userInfo?.chargeCustomers} // if userInfo.chargeCustomers is false the input will be read only
               required />
             <input
               className="regular-song-inputs"
               style={{ borderColor: userInfo.chargeCustomers ? "#ffffff" : "#C2C2C2" }}
               type="text" // ! This field is meant to accept numbers only but we don't get the expected results with type="number" 
               name="category_10"
-              value={prices.amount.category_10}
+              value={prices.category_10 || ""}
               onChange={handleInputChange}
-              readOnly={userInfo.chargeCustomers} // if userInfo.chargeCustomers is true the input will be read only
+              readOnly={!userInfo.chargeCustomers} // if userInfo.chargeCustomers is false the input will be read only
               required />
           </div>
 
@@ -243,11 +255,11 @@ export default function AdminDashboard() {
 
           <BarChart
             data={[
-              { name: "Custom", value: prices.amount.category_6 },
-              { name: "Category1", value: prices.amount.category_7 },
-              { name: "Category2", value: prices.amount.category_8 },
-              { name: "Category3", value: prices.amount.category_9 },
-              { name: "Category4", value: prices.amount.category_10 },
+              { name: "Custom", value: prices.category_6 },
+              { name: "Category1", value: prices.category_7 },
+              { name: "Category2", value: prices.category_8 },
+              { name: "Category3", value: prices.category_9 },
+              { name: "Category4", value: prices.category_10 },
             ]}
           />}
         <button
