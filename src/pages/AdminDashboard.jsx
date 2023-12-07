@@ -183,75 +183,81 @@ export default function AdminDashboard() {
             </label>
           </div>
 
-          {userInfo.chargeCustomers && (
-            <>
-              <label className="questions">Custom song request amount-</label>
-              <input
-                className="custom-song-input"
-                type="text" // ! This field is meant to accept numbers only but we don't get the expected results with type="number" 
-                name="category_6"
-                value={prices.amount.category_6}
-                onChange={handleInputChange}
-                required
-              />
 
-              <label className="questions">Regular song request amounts, from high to low-</label>
-              <div className="text-input-div">
-                <input
-                  className="regular-song-inputs"
-                  type="text" // ! This field is meant to accept numbers only but we don't get the expected results with type="number" 
-                  name="category_7"
-                  value={prices.amount.category_7}
-                  onChange={handleInputChange}
-                  required />
-                <input
-                  className="regular-song-inputs"
-                  type="text" // ! This field is meant to accept numbers only but we don't get the expected results with type="number" 
-                  name="category_8"
-                  value={prices.amount.category_8}
-                  onChange={handleInputChange}
-                  required />
-                <input
-                  className="regular-song-inputs"
-                  type="text" // ! This field is meant to accept numbers only but we don't get the expected results with type="number" 
-                  name="category_9"
-                  value={prices.amount.category_9}
-                  onChange={handleInputChange}
-                  required />
-                <input
-                  className="regular-song-inputs"
-                  type="text" // ! This field is meant to accept numbers only but we don't get the expected results with type="number" 
-                  name="category_10"
-                  value={prices.amount.category_10}
-                  onChange={handleInputChange}
-                  required />
-              </div>
-            </>
-          )}
+          <label className="questions">Custom song request amount-</label>
+          <input
+            className="custom-song-input"
+            style={{ borderColor: userInfo.chargeCustomers ? "#ffffff" : "#C2C2C2" }}
+            type="text" // ! This field is meant to accept numbers only but we don't get the expected results with type="number" 
+            name="category_6"
+            value={prices.amount.category_6}
+            onChange={handleInputChange}
+            readOnly={userInfo.chargeCustomers} // if userInfo.chargeCustomers is true the input will be read only
+            required
+          />
+
+          <label className="questions">Regular song request amounts, from high to low-</label>
+          <div className="text-input-div">
+            <input
+              className="regular-song-inputs"
+              style={{ borderColor: userInfo.chargeCustomers ? "#ffffff" : "#C2C2C2" }}
+              type="text"
+              name="category_7"
+              value={prices.amount.category_7}
+              onChange={handleInputChange}
+              readOnly={userInfo.chargeCustomers} // if userInfo.chargeCustomers is true the input will be read only
+              required
+            />
+            <input
+              className="regular-song-inputs"
+              style={{ borderColor: userInfo.chargeCustomers ? "#ffffff" : "#C2C2C2" }}
+              type="text" // ! This field is meant to accept numbers only but we don't get the expected results with type="number" 
+              name="category_8"
+              value={prices.amount.category_8}
+              onChange={handleInputChange}
+              readOnly={userInfo.chargeCustomers} // if userInfo.chargeCustomers is true the input will be read only
+              required />
+            <input
+              className="regular-song-inputs"
+              style={{ borderColor: userInfo.chargeCustomers ? "#ffffff" : "#C2C2C2" }}
+              type="text" // ! This field is meant to accept numbers only but we don't get the expected results with type="number" 
+              name="category_9"
+              value={prices.amount.category_9}
+              onChange={handleInputChange}
+              readOnly={userInfo.chargeCustomers} // if userInfo.chargeCustomers is true the input will be read only
+              required />
+            <input
+              className="regular-song-inputs"
+              style={{ borderColor: userInfo.chargeCustomers ? "#ffffff" : "#C2C2C2" }}
+              type="text" // ! This field is meant to accept numbers only but we don't get the expected results with type="number" 
+              name="category_10"
+              value={prices.amount.category_10}
+              onChange={handleInputChange}
+              readOnly={userInfo.chargeCustomers} // if userInfo.chargeCustomers is true the input will be read only
+              required />
+          </div>
+
 
         </form>
         {userInfo.chargeCustomers &&
-          <>
-            <BarChart
-              data={[
-                { name: "Custom", value: prices.amount.category_6 },
-                { name: "Category1", value: prices.amount.category_7 },
-                { name: "Category2", value: prices.amount.category_8 },
-                { name: "Category3", value: prices.amount.category_9 },
-                { name: "Category4", value: prices.amount.category_10 },
-              ]}
-            />
-            <button
-              className="save-button"
-              type="submit"
-              disabled={!isValidInput} // if isValidInput is false the button will remain disabled
-              onClick={handleSubmit}>
-              Save
-            </button>
-          </>
-        }
 
-
+          <BarChart
+            data={[
+              { name: "Custom", value: prices.amount.category_6 },
+              { name: "Category1", value: prices.amount.category_7 },
+              { name: "Category2", value: prices.amount.category_8 },
+              { name: "Category3", value: prices.amount.category_9 },
+              { name: "Category4", value: prices.amount.category_10 },
+            ]}
+          />}
+        <button
+          style={{ backgroundColor: isValidInput ? "#6741d9" : "#C2C2C2" }}  // if isValidInput is true the button will be purple, otherwise it will be gray
+          className="save-button"
+          type="submit"
+          disabled={!isValidInput} // if isValidInput is false the button will remain disabled
+          onClick={handleSubmit}>
+          Save
+        </button>
       </>)
 
   )
